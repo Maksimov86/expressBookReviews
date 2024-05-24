@@ -30,20 +30,36 @@ public_users.get('/author/:author', function (req, res) {
   if (booksByAuthor.length > 0) {
     res.status(200).json(booksByAuthor);
   } else {
-    res.status(404).json({message: "No books found by this author"});
+    res.status(404).json({message: "No book found by this author"});
   }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
 // Get all books based on title
 public_users.get('/title/:title', function (req, res) {
-  //Write your code here
+  const title = req.params.title;
+  const booksByTitle = Object.values(books).filter(book => book.title === title);
+  if (booksByTitle.length > 0) {
+    res.status(200).json(booksByTitle);
+  } else {
+    res.status(404).json({message: "No book with this title found"});
+  }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
 //  Get book review
 public_users.get('/review/:isbn', function (req, res) {
-  //Write your code here
+  const isbn = req.params.isbn;
+  if (books[isbn]) {
+    const reviews = books[isbn].reviews;
+    if (Object.keys(reviews).length > 0) {
+      res.status(200).json(reviews);
+    } else {
+      res.status(404).json({message: "No reviews found for this book"});
+    }
+  } else {
+    res.status(404).json({message: "Book with this ISBN not found"});
+  }
   return res.status(300).json({message: "Yet to be implemented"});
 });
 
